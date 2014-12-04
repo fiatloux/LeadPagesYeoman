@@ -1,0 +1,108 @@
+body { background-color: #FFFFFE; }
+
+.navbar { padding: 10px 0; margin-bottom: 0; }
+.navbar #s00-logo img { max-width: 220px; }
+.navbar-default .navbar-nav>li>a { color: #777776; }
+
+.panel-body { padding: 0; }
+.panel-body pre { border-radius: 0; margin: 0; }
+
+div.json-props div.row:first-child { border-top: 1px #EEE solid; }
+div.json-props div.row { border-bottom: 1px #EEE solid; padding: 8px 0; }
+
+div img#example-image { max-width: 340; }
+
+div.p { margin: 0 0 10px; }
+div.footer { color: #333; }
+
+.totop { padding: 6px; text-align: right; }
+
+div.row div.req * {
+    padding: .2em .6em .3em;
+    border-radius: .25em;
+}
+
+div.row div.req {
+    font-size: 75%;
+    line-height: 1;
+    text-align: center;
+    vertical-align: baseline;
+    font-weight: 700;
+    display: inline;
+}
+
+div.row div.req strong {
+    background-color: #5cb85c;
+    color: #FFF;
+}
+
+div.row div.req em {
+    background-color: #777;
+    color: #FFF;
+    font-style: normal !important;
+}
+
+/* builder overrides */
+.leadstyle-google-button, .leadstyle-twitter-button, .leadstyle-facebook-button {
+    width: 100px;
+    height: 100px;
+}
+
+/* Section Styles */
+#s00 { background-color: #F8F8F8; }
+#s01 { background-color: #F1F6E4; }
+#s02 { background-color: #E4EFF5; }
+#s03 { background-color: #F6F0E4; }
+#s04 { background-color: #E4E4E4; }
+#s05 { background-color: #E4EEF6; }
+#s06 { background-color: #FFFFFE; }
+
+#s04 h3 { margin-left: 15px; }
+
+/* Example Styles */
+#ex04 { position: relative; overflow: hidden; z-index: 0; }
+#ex04 { position: relative; overflow: hidden; z-index: 0; }
+#ex04-background-image { position: absolute; top: 0; max-width: 1140px; z-index: -1; }
+
+/* Countdown Timer Styles */
+.countdown {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: inline-block;
+}
+.countdown li {
+    float: left;
+    text-align: center;
+    margin: 0 2px !important;
+}
+.countdown li .flap {
+    background-color: #000000;
+    width: 64px;
+    min-height: 58px;
+    padding: 10px 0;
+    vertical-align: middle;
+    display: table-cell;
+}
+.countdown li .flap span {
+    width: 64px;
+    display: inline-block;
+    color: #FAFAFA;
+    font-weight: 100 !important;
+    font-size: 24px;
+    line-height: 30px !important;
+    position: relative;
+    text-align: center;
+}
+.countdown p {
+    display: inline-block;
+    float: left;
+    font-weight: 400 !important;
+    color: #7b7b7b !important;
+    font-size: 11px !important;
+    text-align: center;
+    width: 64px !important;
+    line-height: 20px;
+    text-transform: uppercase;
+    margin: 1px 0 0 0;
+}

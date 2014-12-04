@@ -7,6 +7,10 @@
     "leadpages-generator"
   ],
   "dependencies": {
-    "yeoman-generator": "^0.18.2"
+    "chalk": "^0.5.1",
+    "path": "^0.4.9",
+    "util": "^0.10.3",
+    "yeoman-generator": "^0.18.2",
+    "yosay": "^1.0.0"
   }
 }
