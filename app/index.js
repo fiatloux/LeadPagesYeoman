@@ -7,6 +7,21 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 var fs = require('fs');
 
+function insertTemplateLang(fileName, strToReplace, replaceStr) {
+
+	fs.readFile(fileName, 'utf8', function (err,data) {
+	  if (err) {
+	    return console.log(err);
+	  }
+
+	  var result = data.replace(strToReplace, replaceStr);
+
+	  fs.writeFile(fileName, result, 'utf8', function (err) {
+	     if (err) return console.log(err);
+	  });
+	});
+}
+
 module.exports = yeoman.generators.Base.extend({
 
 	prompting: function () {
@@ -66,7 +81,7 @@ module.exports = yeoman.generators.Base.extend({
 	  			this.directory('css', "leadpages-template/css");
 	  			this.directory('img', "leadpages-template/img");
 
-	  			this.copy("meta/_form.html", "meta/form.html");
+	  			this.copy("meta/_form.html", "leadpages-template/meta/form.html");
 	  		}
 	  	},
 
@@ -76,8 +91,16 @@ module.exports = yeoman.generators.Base.extend({
 	  			template_name: this.templateName
 	  		};
 
-	  		this.template("_index.html", "leadpages-template/index.html", context);
-	  		this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
+	  		if(this.sampleCodes){
+	  			var indexFile = "leadpages-template/index.html",
+	  				templateJSON = "leadpages-template/meta/template.json";
+
+	  			insertTemplateLang(indexFile, 'Template Starter Kit', '<%= template_name %>');
+	  			insertTemplateLang(templateJSON, 'LeadPages Template Starter Kit', '<%= template_name %>');
+	  		}
+
+  			this.template("_index.html", "leadpages-template/index.html", context);
+  			this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
 	  	}
 	  }
 
