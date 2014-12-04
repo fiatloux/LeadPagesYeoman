@@ -1,6 +1,6 @@
 ### What is this repository for? ###
 
-Scaffold a LeadPages Template Authoring Kit
+A [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages Template Authoring Kit
 
 ### How do I get set up? ###
 
