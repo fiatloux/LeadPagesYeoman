@@ -10,7 +10,7 @@ Scaffold a LeadPages Template Authoring Kit
 ### How to run it? ###
 
 * Create a folder and `cd` into it
-* `yo lptemplate` and following the prompts
+* `yo lptemplate` and follow the prompts
 * Start coding!
 
 
