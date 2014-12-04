@@ -5,6 +5,7 @@ var util = require('util');
 var path = require('path');
 var chalk = require('chalk');
 var yosay = require('yosay');
+var fs = require('fs');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -27,12 +28,19 @@ module.exports = yeoman.generators.Base.extend({
 	    		name: 'templateName',
 	    		message: 'What is your template\'s name?',
 	    		default: 'LeadPages Template Starter Kit'
+	    	},
+	    	{
+	    		type: 'confirm',
+	    		name: 'sampleCodes',
+	    		message: 'Would you like to include a template sample codes?',
+	    		default: false
 	    	}
 	    ];
 
 	    this.prompt(prompts, function (props) {
 	    	this.templateId = props.templateId;
 	      	this.templateName = props.templateName;
+	      	this.sampleCodes = props.sampleCodes;
 
 	      done();
 	    }.bind(this));
@@ -40,21 +48,26 @@ module.exports = yeoman.generators.Base.extend({
 
 	  writing: {
 
-	  	scaffoldFolders: function() {
-	  		this.mkdir("leadpages-template");
-	  		this.mkdir("leadpages-template/img");
-	  		this.mkdir("leadpages-template/css");
-	  		this.mkdir("leadpages-template/js");
-	  		this.mkdir("leadpages-template/meta");
-	  	},
+	  	scaffolding: function() {
 
-	  	copyFiles: function() {
+	  		if(this.sampleCodes){
+	  			this.directory("template-starter-kit/leadpages-template", "leadpages-template");
+	  		} else {
 
-	  		this.directory('js', "leadpages-template/js");
-	  		this.directory('css', "leadpages-template/css");
-	  		this.directory('img', "leadpages-template/img");
+	  			//scaffold the folders
+	  			this.mkdir("leadpages-template");
+	  			this.mkdir("leadpages-template/img");
+	  			this.mkdir("leadpages-template/css");
+	  			this.mkdir("leadpages-template/js");
+	  			this.mkdir("leadpages-template/meta");
 
-	  		this.copy("meta/_form.html", "leadpages-template/meta/form.html");
+	  			//Copy files
+	  			this.directory('js', "leadpages-template/js");
+	  			this.directory('css', "leadpages-template/css");
+	  			this.directory('img', "leadpages-template/img");
+
+	  			this.copy("meta/_form.html", "meta/form.html");
+	  		}
 	  	},
 
 	  	templating: function() {
@@ -63,7 +76,7 @@ module.exports = yeoman.generators.Base.extend({
 	  			template_name: this.templateName
 	  		};
 
-	  		this.template("_index.html", "leadpages-template/index.html",context);
+	  		this.template("_index.html", "leadpages-template/index.html", context);
 	  		this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
 	  	}
 	  }
