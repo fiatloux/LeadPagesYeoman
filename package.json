@@ -1,10 +1,10 @@
 {
-  "name": "generator-leadpages",
-  "version": "0.1.0",
+  "name": "generator-lptemplate",
+  "version": "1.0.0",
   "description": "LeadPages Template Authoring Generator",
   "keywords": [
     "yeoman-generator",
-    "leadpages-generator"
+    "lp-template-generator"
   ],
   "dependencies": {
     "chalk": "^0.5.1",
