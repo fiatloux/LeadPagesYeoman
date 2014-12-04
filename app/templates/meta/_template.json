@@ -1,6 +1,6 @@
 {
-    "id": "<%= site_name %>",
-    "name": "LeadPages Template Starter Kit",
+    "id": "<%= template_id %>",
+    "name": "<%= template_name %>",
     "mobile": true,
     "notes": "My very first template!",
     "syntax": 4,

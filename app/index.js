@@ -1,20 +1,17 @@
 'use strict';
 
 var yeoman = require('yeoman-generator');
+var util = require('util');
+var path = require('path');
 var chalk = require('chalk');
 var yosay = require('yosay');
 
 module.exports = yeoman.generators.Base.extend({
 
-	initializing: function () {
-	    this.pkg = require('../package.json');
-	 },
-
 	prompting: function () {
 	    var done = this.async();
 
 	    // Have Yeoman greet the user.
-	    console.log(this.yeoman);
 	    
 	    this.log(yosay(
 	      'Welcome to the cool' + chalk.red('LeadPages Template') + ' generator!'
@@ -29,12 +26,13 @@ module.exports = yeoman.generators.Base.extend({
 	    	{
 	    		name: 'templateName',
 	    		message: 'What is your template\'s name?',
-	    		default: this.appName
+	    		default: 'LeadPages Template Starter Kit'
 	    	}
 	    ];
 
 	    this.prompt(prompts, function (props) {
-	      this.templateName = props.templateName
+	    	this.templateId = props.templateId;
+	      	this.templateName = props.templateName;
 
 	      done();
 	    }.bind(this));
@@ -52,17 +50,21 @@ module.exports = yeoman.generators.Base.extend({
 
 	  	copyFiles: function() {
 
-	  		this.fs.directory('js', "leadpages-template/js");
-	  		this.fs.directory('css', "leadpages-template/css");
-	  		this.fs.directory('img', "leadpages-template/img");
+	  		this.directory('js', "leadpages-template/js");
+	  		this.directory('css', "leadpages-template/css");
+	  		this.directory('img', "leadpages-template/img");
 
 	  		this.copy("meta/_form.html", "leadpages-template/meta/form.html");
+	  	},
 
+	  	templating: function() {
 	  		var context = {
-	  			site_name: this.templateName;
-	  		}
-	  		this.template("_index.html", "leadpages-template/index.html", context);
-	  		this.template("meta/_template.json", "leadpages-template/meta/template.json", context)
+	  			template_id: this.templateId,
+	  			template_name: this.templateName
+	  		};
+
+	  		this.template("_index.html", "leadpages-template/index.html",context);
+	  		this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
 	  	}
 	  }
 
