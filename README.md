@@ -4,7 +4,7 @@ This README would normally document whatever steps are necessary to get your app
 
 ### What is this repository for? ###
 
-For scaffolding template authoring for LeadPages.
+Scaffold a LeadPages Template Authoring Kit
 
 ### How do I get set up? ###
 
