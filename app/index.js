@@ -75,7 +75,7 @@ module.exports = yeoman.generators.Base.extend({
 	  			this.mkdir("leadpages-template/fonts");
 	  			this.mkdir("leadpages-template/img");
 	  			this.mkdir("leadpages-template/js");
-	  			
+
 	  			this.mkdir("leadpages-template/meta");
 
 	  			//Copy files
@@ -83,7 +83,7 @@ module.exports = yeoman.generators.Base.extend({
 	  			this.directory('img', "leadpages-template/img");
 	  			this.directory('js', "leadpages-template/js");
 
-	  			this.copy("meta/_form.html", "leadpages-template/meta/form.html");
+	  			//this.copy("meta/_form.html", "leadpages-template/meta/form.html");
 	  		}
 	  	},
 
