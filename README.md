@@ -5,10 +5,7 @@ A local [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages Template
 ### How do I get set up a local yeoman (for adding features to the generator)? ###
 
 * Install [NodeJS](http://nodejs.org)
-* Clone this repository
-* `cd` into the 'lp-marketplace-generator'
-* Run `npm install` (If error asking for permission, run `sudo chown -R /usr/local/lib/node_modules/`)
-* `npm link`
+* Install yeoman `npm install -g yo generator-lptemplate` (If error asking for permission, run `sudo chown -R `whoami` /usr/local/lib/node_modules` to fix the permission issue)
 
 ### How to run it? ###
 
