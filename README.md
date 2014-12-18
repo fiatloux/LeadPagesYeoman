@@ -1,6 +1,6 @@
 ### What is this repository for? ###
 
-A local [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages Template Authoring Kit.
+An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages Template Authoring Kit.
 
 ### How do I get set up a local yeoman (for adding features to the generator)? ###
 
