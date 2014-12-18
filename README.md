@@ -16,4 +16,4 @@ A local [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages Template
 
 ### Who do I talk to? ###
 
-* Mon Lu
+* @supawaza

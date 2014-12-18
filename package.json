@@ -1,5 +1,5 @@
 {
-  "name": "generator-lptemplate-generator",
+  "name": "generator-lptemplate",
   "version": "1.0.3",
   "description": "LeadPages Template Authoring Kit Generator",
   "main": "app/index.js",
