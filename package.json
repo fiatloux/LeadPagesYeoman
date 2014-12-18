@@ -1,6 +1,6 @@
 {
   "name": "generator-lptemplate",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "LeadPages Template Authoring Kit Generator",
   "main": "app/index.js",
   "repository": "https://github.com/supawaza/lp-marketplace-template-generator",

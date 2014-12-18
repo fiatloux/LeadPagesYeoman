@@ -94,15 +94,14 @@ module.exports = yeoman.generators.Base.extend({
 	  		};
 
 	  		if(this.sampleCodes){
-	  			var indexFile = "leadpages-template/index.html",
-	  				templateJSON = "leadpages-template/meta/template.json";
-
-	  			insertTemplateLang(indexFile, 'Template Starter Kit', '<%= template_name %>');
-	  			insertTemplateLang(templateJSON, 'LeadPages Template Starter Kit', '<%= template_name %>');
+	  			this.template("template-starter-kit/leadpages-template/index.html", "leadpages-template/index.html", context);
+  				this.template("template-starter-kit/leadpages-template/meta/template.json", "leadpages-template/meta/template.json", context);
+	  		} else {
+	  			this.template("_index.html", "leadpages-template/index.html", context);
+  				this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
 	  		}
 
-  			this.template("_index.html", "leadpages-template/index.html", context);
-  			this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
+  			
 	  	}
 	  }
 
