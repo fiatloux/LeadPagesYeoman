@@ -6,7 +6,7 @@ An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages 
 
 * Install [NodeJS](http://nodejs.org)
 * Install yeoman `npm install -g yo generator-lptemplate`
-  * If error asking for permission, run `sudo chown -R `whoami` ~/.npm` to fix the permission issue. If that still doesn't work, try `sudo chown -R `whoami` /usr/local/lib/node_modules`. If that still doesn't work, just add `sudo` in front and enter your password.
+  * If error asking for permission, run `sudo chown -R \`whoami\` ~/.npm` to fix the permission issue. If that still doesn't work, try `sudo chown -R \`whoami\` /usr/local/lib/node_modules`. If that still doesn't work, just add `sudo` in front and enter your password.
 
 ### How to run it? ###
 
