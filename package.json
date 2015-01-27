@@ -1,5 +1,5 @@
 {
-  "name": "generator-lptemplate",
+  "name": "generator-leadpages",
   "version": "1.0.8",
   "description": "LeadPages Template Authoring Kit Generator",
   "main": "app/index.js",
@@ -15,7 +15,7 @@
   ],
   "keywords": [
     "yeoman-generator",
-    "lptemplate-generator"
+    "leadpages-generator"
   ],
   "dependencies": {
     "chalk": "^0.5.1",
@@ -26,5 +26,8 @@
   },
   "peerDependencies": {
     "yo": ">=1.0.0"
+  },
+  "devDependencies": {
+    "nodegit": "^0.2.7"
   }
 }
