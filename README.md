@@ -20,4 +20,4 @@ An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages 
 
 ### Who do I talk to? ###
 
-* @moninator
+* @supawaza
