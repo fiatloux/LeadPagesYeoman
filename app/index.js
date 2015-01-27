@@ -1,31 +1,13 @@
 'use strict';
 
-var yeoman = require('yeoman-generator');
-var util = require('util');
-var path = require('path');
-var chalk = require('chalk');
-var yosay = require('yosay');
-var fs = require('fs');
-var gitclone = require('nodegit').Clone;
-
-function hasFeature(feat, features) {
-	return features.indexOf(feat) !== -1;
-};
-
-function insertTemplateLang(fileName, strToReplace, replaceStr) {
-
-	fs.readFile(fileName, 'utf8', function (err,data) {
-	  if (err) {
-	    return this.log(err);
-	  }
-
-	  var result = data.replace(strToReplace, replaceStr);
-
-	  fs.writeFile(fileName, result, 'utf8', function (err) {
-	     if (err) return this.log(err);
-	  });
-	});
-};
+var yeoman = require('yeoman-generator'),
+	util = require('util'),
+	path = require('path'),
+	chalk = require('chalk'),
+	yosay = require('yosay'),
+	fs = require('fs'),
+	exec = require('child_process').exec,
+	replace = require('replace');
 
 module.exports = yeoman.generators.Base.extend({
 
@@ -42,7 +24,7 @@ module.exports = yeoman.generators.Base.extend({
 	    	{
 	    		name: 'templateId',
 	    		message: 'Please give this template an UNIQUE Id (Ex: WEBINAR-01)',
-	    		default: 'LP-TEMP-01'
+	    		default: 'LP-TSK-01'
 	    	},
 	    	{
 	    		name: 'templateName',
@@ -111,21 +93,7 @@ module.exports = yeoman.generators.Base.extend({
 
 	  	scaffolding: function() {
 
-	  		if(this.sampleCodes){
-	  			this.log('Cloning from repo...');
-
-	  			gitclone.clone('ssh://LeadPages@github.com/template-starter-kit', './temp/', null).then(function(repo) {
-				        var r = repo;
-				        this.log('Cloning from: '+r);
-				    },
-				    function(err){
-				        var e = err;
-				        this.log(yosay(chalk.red("uh oh... can't clone repo...")));
-				    }
-				);
-	  			//this.directory("template-starter-kit/leadpages-template", "leadpages-template");
-
-	  		} else {
+	  		if(!this.sampleCodes){
 
 	  			this.log('Templating...');
 
@@ -143,21 +111,9 @@ module.exports = yeoman.generators.Base.extend({
 	  			this.directory('img', "leadpages-template/img");
 	  			this.directory('js', "leadpages-template/js");
 
-	  			this.log('Finished scaffolding!');
+	  			this.log('Finished scaffolding skeleton folders!');
 	  		}
 
-	  		this.log("Extra extra!");
-
-	  		console.log(this.extras);
-
-	  		var i;
-	  		if(typeof this.extras !== 'undefined'){
-	  			for ( i=0; i < this.extras.length; i++ ){
-	  				console.log('hmm: '+this.extras[i]);
-	  				this.mkdir(this.extras[i]);
-	  			}
-	  		}
-	  		
 	  	},
 
 	  	templating: function() {
@@ -166,15 +122,62 @@ module.exports = yeoman.generators.Base.extend({
 	  			template_name: this.templateName
 	  		};
 
-	  		// if(this.sampleCodes){
-	  		// 	this.template("template-starter-kit/leadpages-template/index.html", "leadpages-template/index.html", context);
-  			// 	this.template("template-starter-kit/leadpages-template/meta/template.json", "leadpages-template/meta/template.json", context);
-	  		// } else {
-	  		// 	this.template("_index.html", "leadpages-template/index.html", context);
-  			// 	this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
-	  		// }
+	  		if(this.sampleCodes){
+	  			var obj = this;
 
-  			this.log(yosay(chalk.green("I'm done! Let's code!")));
+	  			this.log('Cloning from repo...');
+
+	  			var repo = 'git@github.com:LeadPages/template-starter-kit.git';
+
+	  			var clone = exec('git clone '+repo+' ./',
+	  				function (error, stdout, stderr) {
+  				    	console.log('Cloning from '+repo);
+
+	  				    if (error !== null) {
+	  				      console.log('Uh oh: '+ error);
+	  				    } else {
+
+	  				    	var cleanup = exec('rm -rf .gitignore .git LICENSE');
+
+	  				    	//Insert template tags
+	  				    	var replaceHtmlTitle = replace({
+	  				    	    regex: "Template Starter Kit",
+	  				    	    replacement: context.template_name,
+	  				    	    paths: ['./leadpages-template/index.html'],
+	  				    	    recursive: true,
+	  				    	    silent: true,
+	  				    	});
+	  				    	var replaceJsonId = replace({
+	  				    	    regex: "LP-TSK-01",
+	  				    	    replacement: context.template_id,
+	  				    	    paths: ['./leadpages-template/meta/template.json'],
+	  				    	    recursive: true,
+	  				    	    silent: true,
+	  				    	});
+	  				    	var replaceJsonTitle = replace({
+	  				    	    regex: "LeadPages Template Starter Kit",
+	  				    	    replacement: context.template_name,
+	  				    	    paths: ['./leadpages-template/meta/template.json'],
+	  				    	    recursive: true,
+	  				    	    silent: true,
+	  				    	});
+
+	  						var i;
+	  						if(typeof obj.extras !== 'undefined'){
+	  							obj.log("Generating "+obj.extras.join(', ')+" folders!");
+	  							for ( i=0; i < obj.extras.length; i++ ){
+	  								obj.mkdir(obj.extras[i]);
+	  							}
+	  						}
+	  				    }
+	  				}
+	  			);
+
+	  		} else {
+	  			this.template("_index.html", "leadpages-template/index.html", context);
+  				this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
+	  		}
+
 	  	}
 	  }
 

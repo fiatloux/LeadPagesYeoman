@@ -1,14 +1,14 @@
 {
   "name": "generator-leadpages",
-  "version": "1.0.8",
-  "description": "LeadPages Template Authoring Kit Generator",
+  "version": "1.0.84",
+  "description": "LeadPages Template Starter Kit Generator",
   "main": "app/index.js",
-  "repository": "https://github.com/supawaza/lp-marketplace-template-generator",
+  "repository": "https://github.com/LeadPages/LeadPagesYeoman",
   "license": "MIT",
   "author": {
     "name": "Mon Lu",
-    "email": "supawaza@gmail.com",
-    "url": "https://github.com/supawaza"
+    "email": "mon@ave81.com",
+    "url": "https://github.com/LeadPages/"
   },
   "files": [
     "app"
@@ -26,8 +26,5 @@
   },
   "peerDependencies": {
     "yo": ">=1.0.0"
-  },
-  "devDependencies": {
-    "nodegit": "^0.2.7"
   }
 }
