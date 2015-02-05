@@ -18,6 +18,9 @@ An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages 
 * Start coding!
 
 
-### Who do I talk to? ###
+## Contributing ##
 
-* @supawaza
+1. Fork [a branch](https://github.com/LeadPagesYeoman)
+2. Code
+3. Submit a Pull Request
+4. Thank you for helping out! You're awesome!
