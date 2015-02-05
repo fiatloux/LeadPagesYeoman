@@ -1,24 +1,25 @@
 {
-  "name": "generator-lptemplate",
-  "version": "1.0.8",
-  "description": "LeadPages Template Authoring Kit Generator",
+  "name": "generator-leadpages",
+  "version": "1.0.85",
+  "description": "LeadPages Template Starter Kit Generator",
   "main": "app/index.js",
-  "repository": "https://github.com/supawaza/lp-marketplace-template-generator",
+  "repository": "https://github.com/LeadPages/LeadPagesYeoman",
   "license": "MIT",
   "author": {
     "name": "Mon Lu",
-    "email": "supawaza@gmail.com",
-    "url": "https://github.com/supawaza"
+    "email": "mon@ave81.com",
+    "url": "https://github.com/LeadPages/"
   },
   "files": [
     "app"
   ],
   "keywords": [
     "yeoman-generator",
-    "lptemplate-generator"
+    "leadpages-generator"
   ],
   "dependencies": {
     "chalk": "^0.5.1",
+    "gulp-template": "^2.1.0",
     "path": "^0.4.9",
     "util": "^0.10.3",
     "yeoman-generator": "^0.18.2",

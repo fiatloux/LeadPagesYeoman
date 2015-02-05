@@ -1,28 +1,16 @@
 'use strict';
 
-var yeoman = require('yeoman-generator');
-var util = require('util');
-var path = require('path');
-var chalk = require('chalk');
-var yosay = require('yosay');
-var fs = require('fs');
+var generators = require('yeoman-generator'),
+	util = require('util'),
+	path = require('path'),
+	chalk = require('chalk'),
+	yosay = require('yosay'),
+	fs = require('fs'),
+	exec = require('child_process').exec,
+	defaults = require('./configs/defaults');
 
-function insertTemplateLang(fileName, strToReplace, replaceStr) {
 
-	fs.readFile(fileName, 'utf8', function (err,data) {
-	  if (err) {
-	    return console.log(err);
-	  }
-
-	  var result = data.replace(strToReplace, replaceStr);
-
-	  fs.writeFile(fileName, result, 'utf8', function (err) {
-	     if (err) return console.log(err);
-	  });
-	});
-}
-
-module.exports = yeoman.generators.Base.extend({
+module.exports = generators.Base.extend({
 
 	prompting: function () {
 	    var done = this.async();
@@ -30,79 +18,134 @@ module.exports = yeoman.generators.Base.extend({
 	    // Have Yeoman greet the user.
 	    
 	    this.log(yosay(
-	      'Welcome to the cool' + chalk.red('LeadPages Template') + ' generator!'
+	      'Welcome to the\n' + chalk.green.bold('LeadPages ') + chalk.yellow('Template Starter Kit ') + 'generator!'
 	    ));
 
 	    var prompts = [
 	    	{
 	    		name: 'templateId',
 	    		message: 'Please give this template an UNIQUE Id (Ex: WEBINAR-01)',
-	    		default: 'LP-TEMP-01'
+	    		default: defaults.templateId
 	    	},
 	    	{
 	    		name: 'templateName',
 	    		message: 'What is your template\'s name?',
-	    		default: 'LeadPages Template Starter Kit'
+	    		default: defaults.templateName
 	    	},
 	    	{
 	    		type: 'confirm',
 	    		name: 'sampleCodes',
-	    		message: 'Would you like to include a template sample codes?',
-	    		default: false
+	    		message: 'Would you like to include template sample codes?',
+	    		default: true
+	    	},
+	    	{
+	    		type: 'confirm',
+	    		name: 'gulp',
+	    		message: 'Include Gulp tasks to make your life easier?',
+	    		default: true
+	    	},
+	    	{
+
+	    		when: function (repsonse) {
+	    			return repsonse.gulp;
+	    		},
+	    		name: 'extras',
+	    		message: 'Include the following?',
+	    		type: 'checkbox',
+	    		choices: [
+					{
+						name: 'SASS',
+						value: 'sass',
+						checked: true
+
+					}
+
+	    		]
+
 	    	}
 	    ];
 
 	    this.prompt(prompts, function (props) {
+
 	    	this.templateId = props.templateId;
 	      	this.templateName = props.templateName;
 	      	this.sampleCodes = props.sampleCodes;
+	      	this.gulp = props.gulp;
+	      	
+	      	if(this.gulp){
+	      		this.extras = props.extras;
+	      	}
 
-	      done();
-	    }.bind(this));
-	  },
+	      	done();
+	     }.bind(this));
+	}, //prompting
 
-	  writing: {
+	writing: {
 
-	  	scaffolding: function() {
+		scaffolding: function(){
+			
+			var finish = this.async(),
+				self = this;
 
-	  		if(this.sampleCodes){
-	  			this.directory("template-starter-kit/leadpages-template", "leadpages-template");
-	  		} else {
+			var templates = {
+				template_id: this.templateId,
+				template_name: this.templateName
+			};
+			
+			if(this.sampleCodes){
 
-	  			//scaffold the folders
-	  			this.mkdir("leadpages-template");
-	  			this.mkdir("leadpages-template/css");
-	  			this.mkdir("leadpages-template/fonts");
-	  			this.mkdir("leadpages-template/img");
-	  			this.mkdir("leadpages-template/js");
+				var cloneSkeleton = this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
+					remote.directory('.', '.');
+				}, false);
 
-	  			this.mkdir("leadpages-template/meta");
+				//Overwrite Skeleton with sample codes
+				var cloneSample = this.remote('supawaza', 'template-starter-kit', 'yeoman', function (err, remote){
+					remote.directory('leadpages-template', 'leadpages-template');
+					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
+					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+				}, false);
 
-	  			//Copy files
-	  			this.directory('css', "leadpages-template/css");
-	  			this.directory('img', "leadpages-template/img");
-	  			this.directory('js', "leadpages-template/js");
+			}  else {
+				var cloneSkeleton = this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
+					remote.directory('.', '.');
+					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
+					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+				}, false);
+			}
 
-	  			//this.copy("meta/_form.html", "leadpages-template/meta/form.html");
-	  		}
-	  	},
+			finish();
 
-	  	templating: function() {
-	  		var context = {
-	  			template_id: this.templateId,
-	  			template_name: this.templateName
-	  		};
+		},
 
-	  		if(this.sampleCodes){
-	  			this.template("template-starter-kit/leadpages-template/index.html", "leadpages-template/index.html", context);
-  				this.template("template-starter-kit/leadpages-template/meta/template.json", "leadpages-template/meta/template.json", context);
-	  		} else {
-	  			this.template("_index.html", "leadpages-template/index.html", context);
-  				this.template("meta/_template.json", "leadpages-template/meta/template.json", context);
-	  		}
+		cleanUp: function(){
+			var self = this;
 
-  			
-	  	}
-	  }
+			setTimeout(function(){
+				if(!self.gulp){
+					exec('rm -v gulpfile.js package.json readme.md && rm -rfv ./gulp ./scripts ./scss');
+				}
+
+				exec('rm -v .DS_store .gitignore');
+
+			}, 1000);
+		}
+	},
+
+	install: function(){
+		installGulp: {
+			console.log('Installing Build System packages...');
+			this.npmInstall();
+		}
+	},
+
+	end: function(){
+		goodbye: {
+			this.log(
+				yosay(chalk.green("I'm all done! Happy Hacking!"))
+			);
+		}
+	}
+
+
 
 });

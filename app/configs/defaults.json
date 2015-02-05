@@ -1,0 +1,6 @@
+{
+	"templateId": "LP-TSK-01",
+	"templateName": "LeadPages Template Starter Kit",
+	"indexFile": "leadpages-template/index.html",
+	"jsonFile": "leadpages-template/meta/template.json"
+}
