@@ -1,6 +1,6 @@
 'use strict';
 
-var yeoman = require('yeoman-generator'),
+var generators = require('yeoman-generator'),
 	util = require('util'),
 	path = require('path'),
 	chalk = require('chalk'),
@@ -9,9 +9,8 @@ var yeoman = require('yeoman-generator'),
 	exec = require('child_process').exec,
 	defaults = require('./configs/defaults');
 
-module.exports = yeoman.generators.Base.extend({
 
-
+module.exports = generators.Base.extend({
 
 	prompting: function () {
 	    var done = this.async();
@@ -19,7 +18,7 @@ module.exports = yeoman.generators.Base.extend({
 	    // Have Yeoman greet the user.
 	    
 	    this.log(yosay(
-	      'Welcome to the cool' + chalk.red('LeadPages Template Starter Kit') + ' generator!'
+	      'Welcome to the\n' + chalk.green.bold('LeadPages ') + chalk.yellow('Template Starter Kit ') + 'generator!'
 	    ));
 
 	    var prompts = [
@@ -37,13 +36,13 @@ module.exports = yeoman.generators.Base.extend({
 	    		type: 'confirm',
 	    		name: 'sampleCodes',
 	    		message: 'Would you like to include template sample codes?',
-	    		default: false
+	    		default: true
 	    	},
 	    	{
 	    		type: 'confirm',
 	    		name: 'gulp',
 	    		message: 'Include Gulp tasks to make your life easier?',
-	    		default: false
+	    		default: true
 	    	},
 	    	{
 
@@ -59,11 +58,6 @@ module.exports = yeoman.generators.Base.extend({
 						value: 'sass',
 						checked: true
 
-					},
-					{
-						name: 'Modernizr',
-						value: 'modernizr',
-						checked: false
 					}
 
 	    		]
@@ -84,51 +78,74 @@ module.exports = yeoman.generators.Base.extend({
 
 	      	done();
 	     }.bind(this));
-	  },
+	}, //prompting
 
-	  writing: {
+	writing: {
 
-	  	gettingstuff: function (){
-	  		this.log('Cloning... ');
-	  		//Clone build system and skeleton template files
-	  		this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function (err, remote) {
-				remote.directory('.', './tmp');
-			}, false);
-	  	},
+		scaffolding: function(){
+			
+			var finish = this.async(),
+				self = this;
 
-	  	scaffolding: function() {
+			var templates = {
+				template_id: this.templateId,
+				template_name: this.templateName
+			};
+			
+			if(this.sampleCodes){
 
-	  		this.log('Scaffolding...');
+				var cloneSkeleton = this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
+					remote.directory('.', '.');
+				}, false);
 
-	  		if(!this.sampleCodes && fs.existsSync('./tmp')){
+				//Overwrite Skeleton with sample codes
+				var cloneSample = this.remote('supawaza', 'template-starter-kit', 'yeoman', function (err, remote){
+					remote.directory('leadpages-template', 'leadpages-template');
+					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
+					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+				}, false);
 
-	  			this.directory('./tmp/leadpages-template', './leadpages-template');
-
-	  		} else {
-	  			this.remote('LeadPages', 'template-starter-kit', 'yeoman', function (err, remote){
-	  				remote.directory('./leadpages-template', './leadpages-template');
-	  			});
-	  		}
-
-	  		if(this.gulp && fs.existsSync('./tmp')){
-				this.directory('./tmp/gulp', './gulp');
-	  		}
-
-	  	},
-
-	  	templating: function() {
-	  		var context = {
-	  			template_id: this.templateId,
-	  			template_name: this.templateName
-	  		};
-
-	  		if(fs.existsSync('./tmp')){
-  				this.template("./tmp/leadpages-template/index.html", "leadpages-template/index.html", context);
-				this.template("./tmp/leadpages-template/meta/template.json", "leadpages-template/meta/template.json", context);
+			}  else {
+				var cloneSkeleton = this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
+					remote.directory('.', '.');
+					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
+					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+				}, false);
 			}
 
-	  	}
+			finish();
 
-	  }
+		},
+
+		cleanUp: function(){
+			var self = this;
+
+			setTimeout(function(){
+				if(!self.gulp){
+					exec('rm -v gulpfile.js package.json readme.md && rm -rfv ./gulp ./scripts ./scss');
+				}
+
+				exec('rm -v .DS_store .gitignore');
+
+			}, 1000);
+		}
+	},
+
+	install: function(){
+		installGulp: {
+			console.log('Installing Build System packages...');
+			this.npmInstall();
+		}
+	},
+
+	end: function(){
+		goodbye: {
+			this.log(
+				yosay(chalk.green("I'm all done! Happy Hacking!"))
+			);
+		}
+	}
+
+
 
 });
