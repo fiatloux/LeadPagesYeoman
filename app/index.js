@@ -18,7 +18,7 @@ module.exports = generators.Base.extend({
 	    // Have Yeoman greet the user.
 	    
 	    this.log(yosay(
-	      'Welcome to the\n' + chalk.green.bold('LeadPages ') + chalk.yellow('Template Starter Kit ') + 'generator!'
+	      'Welcome to the\n' + chalk.green.bold('LeadPages(TM) ') + chalk.yellow('Template Starter Kit ') + 'generator!'
 	    ));
 
 	    var prompts = [
@@ -35,7 +35,7 @@ module.exports = generators.Base.extend({
 	    	{
 	    		type: 'confirm',
 	    		name: 'sampleCodes',
-	    		message: 'Would you like to include the LeadPages&trade; Template Starter Kit?',
+	    		message: 'Would you like to include the LeadPages(TM) Template Starter Kit?',
 	    		default: true
 	    	},
 	    	{
