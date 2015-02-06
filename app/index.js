@@ -18,13 +18,13 @@ module.exports = generators.Base.extend({
 	    // Have Yeoman greet the user.
 	    
 	    this.log(yosay(
-	      'Welcome to the\n' + chalk.green.bold('LeadPages ') + chalk.yellow('Template Starter Kit ') + 'generator!'
+	      'Welcome to the\n' + chalk.green.bold('LeadPages(TM) ') + chalk.yellow('Template Starter Kit ') + 'generator!'
 	    ));
 
 	    var prompts = [
 	    	{
 	    		name: 'templateId',
-	    		message: 'Please give this template an UNIQUE Id (Ex: WEBINAR-01)',
+	    		message: 'Please give this template an UNIQUE ID (Ex: WEBINAR-01)',
 	    		default: defaults.templateId
 	    	},
 	    	{
@@ -35,7 +35,7 @@ module.exports = generators.Base.extend({
 	    	{
 	    		type: 'confirm',
 	    		name: 'sampleCodes',
-	    		message: 'Would you like to include template sample codes?',
+	    		message: 'Would you like to include the LeadPages(TM) Template Starter Kit?',
 	    		default: true
 	    	},
 	    	{
@@ -94,19 +94,19 @@ module.exports = generators.Base.extend({
 			
 			if(this.sampleCodes){
 
-				var cloneSkeleton = this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
+				var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
 					remote.directory('.', '.');
 				}, false);
 
 				//Overwrite Skeleton with sample codes
-				var cloneSample = this.remote('supawaza', 'template-starter-kit', 'yeoman', function (err, remote){
+				var cloneSample = this.remote('LeadPages', 'template-starter-kit', 'yeoman', function (err, remote){
 					remote.directory('leadpages-template', 'leadpages-template');
 					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
 					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
 				}, false);
 
 			}  else {
-				var cloneSkeleton = this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
+				var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
 					remote.directory('.', '.');
 					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
 					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
