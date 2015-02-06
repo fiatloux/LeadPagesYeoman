@@ -13,13 +13,18 @@ var generators = require('yeoman-generator'),
 module.exports = generators.Base.extend({
 
 	initialize: function() {
+	    
+	    //Greeting
+	    this.log(yosay(
+	      'Welcome to the\n' + chalk.green.bold('LeadPages(TM) ') + chalk.yellow('Template Starter Kit ') + 'generator!'
+	    ));
 
+	    //Cache the repos
 		this.log(chalk.green('Caching necessary files...'));
 		
 		var done = this.async();
-		this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(){}, true);
 
-		//Overwrite Skeleton with sample codes
+		this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(){}, true);
 		this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function (){ done();}, true);
 
 
@@ -27,12 +32,6 @@ module.exports = generators.Base.extend({
 
 	prompting: function () {
 	    var done = this.async();
-
-	    // Have Yeoman greet the user.
-	    
-	    this.log(yosay(
-	      'Welcome to the\n' + chalk.green.bold('LeadPages(TM) ') + chalk.yellow('Template Starter Kit ') + 'generator!'
-	    ));
 
 	    var prompts = [
 	    	{
@@ -91,7 +90,7 @@ module.exports = generators.Base.extend({
 
 	      	done();
 	     }.bind(this));
-	}, //prompting
+	},
 
 	writing: {
 
@@ -107,6 +106,7 @@ module.exports = generators.Base.extend({
 			
 			if(this.sampleCodes){
 
+				//Copy from cached files
 				var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
 					remote.directory('.', '.');
 				}, false);
