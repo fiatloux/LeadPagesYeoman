@@ -12,14 +12,26 @@ var generators = require('yeoman-generator'),
 
 module.exports = generators.Base.extend({
 
-	prompting: function () {
-	    var done = this.async();
-
-	    // Have Yeoman greet the user.
+	initialize: function() {
 	    
+	    //Greeting
 	    this.log(yosay(
 	      'Welcome to the\n' + chalk.green.bold('LeadPages(TM) ') + chalk.yellow('Template Starter Kit ') + 'generator!'
 	    ));
+
+	    //Cache the repos
+		this.log(chalk.green('Caching necessary files...'));
+		
+		var done = this.async();
+
+		this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(){}, true);
+		this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function (){ done();}, true);
+
+
+	},
+
+	prompting: function () {
+	    var done = this.async();
 
 	    var prompts = [
 	    	{
@@ -78,14 +90,14 @@ module.exports = generators.Base.extend({
 
 	      	done();
 	     }.bind(this));
-	}, //prompting
+	},
 
 	writing: {
 
 		scaffolding: function(){
 			
-			var finish = this.async(),
-				self = this;
+			var finish = this.async();
+			var self = this;
 
 			var templates = {
 				template_id: this.templateId,
@@ -94,15 +106,17 @@ module.exports = generators.Base.extend({
 			
 			if(this.sampleCodes){
 
+				//Copy from cached files
 				var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
 					remote.directory('.', '.');
 				}, false);
 
 				//Overwrite Skeleton with sample codes
-				var cloneSample = this.remote('LeadPages', 'template-starter-kit', 'yeoman', function (err, remote){
+				var cloneSample = this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function (err, remote){
 					remote.directory('leadpages-template', 'leadpages-template');
 					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
 					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+					finish();
 				}, false);
 
 			}  else {
@@ -110,10 +124,9 @@ module.exports = generators.Base.extend({
 					remote.directory('.', '.');
 					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
 					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+					finish();
 				}, false);
 			}
-
-			finish();
 
 		},
 
@@ -133,8 +146,13 @@ module.exports = generators.Base.extend({
 
 	install: function(){
 		installGulp: {
-			console.log('Installing Build System packages...');
-			this.npmInstall();
+			if(this.gulp){
+				var self = this;
+				//setTimeout(function(){
+					self.log(chalk.green('\nInstalling Build System packages...\n'));
+					self.npmInstall();
+				//}, 1000);
+			}
 		}
 	},
 
