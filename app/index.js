@@ -12,6 +12,19 @@ var generators = require('yeoman-generator'),
 
 module.exports = generators.Base.extend({
 
+	initialize: function() {
+
+		this.log(chalk.green('Caching necessary files...'));
+		
+		var done = this.async();
+		this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(){}, true);
+
+		//Overwrite Skeleton with sample codes
+		this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function (){ done();}, true);
+
+
+	},
+
 	prompting: function () {
 	    var done = this.async();
 
@@ -84,8 +97,8 @@ module.exports = generators.Base.extend({
 
 		scaffolding: function(){
 			
-			var finish = this.async(),
-				self = this;
+			var finish = this.async();
+			var self = this;
 
 			var templates = {
 				template_id: this.templateId,
@@ -99,10 +112,11 @@ module.exports = generators.Base.extend({
 				}, false);
 
 				//Overwrite Skeleton with sample codes
-				var cloneSample = this.remote('LeadPages', 'template-starter-kit', 'yeoman', function (err, remote){
+				var cloneSample = this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function (err, remote){
 					remote.directory('leadpages-template', 'leadpages-template');
 					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
 					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+					finish();
 				}, false);
 
 			}  else {
@@ -110,10 +124,9 @@ module.exports = generators.Base.extend({
 					remote.directory('.', '.');
 					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
 					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+					finish();
 				}, false);
 			}
-
-			finish();
 
 		},
 
@@ -133,8 +146,13 @@ module.exports = generators.Base.extend({
 
 	install: function(){
 		installGulp: {
-			console.log('Installing Build System packages...');
-			this.npmInstall();
+			if(this.gulp){
+				var self = this;
+				//setTimeout(function(){
+					self.log(chalk.green('\nInstalling Build System packages...\n'));
+					self.npmInstall();
+				//}, 1000);
+			}
 		}
 	},
 
