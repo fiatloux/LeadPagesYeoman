@@ -5,6 +5,8 @@ An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages 
 ### What you need: ###
 
 * Install [NodeJS](http://nodejs.org) and install [Xcode](https://developer.apple.com/xcode/downloads/) (Mac only)
+
+### How to install?
 * Fire up your Terminal and install yeoman and LeadPages&trade; Template Generator `npm install -g yo generator-leadpages`
   * If error asking for permission: try one or both: 
     - Run `sudo chown -R 'whoami' ~/.npm` to fix the permission issue. (Note: ' around whoami are the grave accent `)
@@ -18,11 +20,24 @@ An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages 
 * Type `yo leadpages` and follow the prompts
 * Start coding!
 
+### How to update? ###
+
+* In your favorite terminal, type `yo` and select `Update your generators` at the bottom
+* Use the `space` bar to select/deselect the generator(s) that you want to update then hit `enter`
+
+### How to uninstall? ###
+
+`npm uninstall -g generator-leadpages`
+
 ## What does it include? ###
 
 * A copy of the [LeadPages&trade; Template Starter Kit](https://github.com/LeadPages/template-starter-kit)
 * OR just a barebone LeadPages&trade; required files/folders structure
 * [LeadPages&trade; Build System](https://github.com/LeadPages/LeadPagesBuildSystem)
+
+## Questions/Comments/Feature Request/Bugs? ##
+
+Open an issue [here](https://github.com/LeadPages/LeadPagesYeoman/issues).
 
 
 ## Contributing ##
