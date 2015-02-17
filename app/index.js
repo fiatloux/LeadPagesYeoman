@@ -24,7 +24,7 @@ module.exports = generators.Base.extend({
 
         var done = this.async();
 
-        this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function() {}, true);
+        this.remote('LeadPages', 'supawaza', 'yeoman', function() {}, true);
         this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function() {
             done();
         }, true);
@@ -163,6 +163,8 @@ module.exports = generators.Base.extend({
 
                 if(self.git){
                 	exec('echo "\n\n.DS_store" >> .gitignore && git init && git add .');
+                } else {
+                    exec('rm .gitignore');
                 }
 
             }, 1000);
