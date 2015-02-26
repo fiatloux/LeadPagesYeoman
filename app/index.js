@@ -24,7 +24,7 @@ module.exports = generators.Base.extend({
 
         var done = this.async();
 
-        this.remote('LeadPages', 'supawaza', 'yeoman', function() {}, true);
+        this.remote('LeadPages', 'LeadPagesYeoman', 'yeoman', function() {}, true);
         this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function() {
             done();
         }, true);
@@ -122,7 +122,7 @@ module.exports = generators.Base.extend({
                 }, false);
 
             } else {
-                var cloneSkeleton = this.remote('supawaza', 'LeadPagesBuildSystem', 'yeoman', function(err, remote) {
+                var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(err, remote) {
                     remote.directory('.', '.');
                     remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
                     remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
