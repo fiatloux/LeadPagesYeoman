@@ -72,7 +72,30 @@ module.exports = generators.Base.extend({
                 }
      		]
 
-        }, {
+        },
+        {
+            name: 'vendors',
+            type: 'rawlist',
+            message: 'Want any of these? (You can select multiple)',
+            choices: [
+                {
+                    name: 'jQuery 1.9.1',
+                    value: 'jquery_191',
+                    checked: true
+                },
+                {
+                    name: 'jQuery latest',
+                    value: 'jquery_latest',
+                    checked: false
+                },
+                {
+                    name: 'Bootstrap 3',
+                    value: 'boostrap',
+                    checked: false
+                }
+            ]
+        },
+        {
         	name: 'git',
         	type: 'confirm',
         	message: 'Initialize a Git repository?',
@@ -142,6 +165,8 @@ module.exports = generators.Base.extend({
                 self.npmInstall();
             }
         },
+
+        //TODO: Install vendor scripts. jQuery etc...
 
         cleanUp: function(){
         	var self = this;
