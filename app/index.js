@@ -24,7 +24,7 @@ module.exports = generators.Base.extend({
 
         var done = this.async();
 
-        this.remote('LeadPages', 'LeadPagesYeoman', 'yeoman', function() {}, true);
+        this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function() {}, true);
         this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function() {
             done();
         }, true);
