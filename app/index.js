@@ -103,7 +103,7 @@ module.exports = generators.Base.extend({
         	name: 'git',
         	type: 'confirm',
         	message: 'Initialize a Git repository?',
-        	default: false
+        	default: true
         }];
 
         this.prompt(prompts, function(props) {
