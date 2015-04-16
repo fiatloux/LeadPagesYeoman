@@ -69,37 +69,41 @@ module.exports = generators.Base.extend({
                     name: 'LESS',
                     value: 'less',
                     checked: false
+                }, {
+                    name: 'No thanks',
+                    value: 'none',
+                    checked: false
                 }
      		]
 
         },
-        {
-            name: 'vendors',
-            type: 'rawlist',
-            message: 'Want any of these? (You can select multiple)',
-            choices: [
-                {
-                    name: 'jQuery 1.9.1',
-                    value: 'jquery_191',
-                    checked: true
-                },
-                {
-                    name: 'jQuery latest',
-                    value: 'jquery_latest',
-                    checked: false
-                },
-                {
-                    name: 'Bootstrap 3',
-                    value: 'boostrap',
-                    checked: false
-                }
-            ]
-        },
+        // {
+        //     name: 'vendors',
+        //     type: 'rawlist',
+        //     message: 'Want any of these? (You can select multiple)',
+        //     choices: [
+        //         {
+        //             name: 'jQuery 1.9.1',
+        //             value: 'jquery_191',
+        //             checked: true
+        //         },
+        //         {
+        //             name: 'jQuery latest',
+        //             value: 'jquery_latest',
+        //             checked: false
+        //         },
+        //         {
+        //             name: 'Bootstrap 3',
+        //             value: 'boostrap',
+        //             checked: false
+        //         }
+        //     ]
+        // },
         {
         	name: 'git',
         	type: 'confirm',
         	message: 'Initialize a Git repository?',
-        	default: true
+        	default: false
         }];
 
         this.prompt(prompts, function(props) {
@@ -179,10 +183,14 @@ module.exports = generators.Base.extend({
                 }
 
                 if(!!self.preprocessors){
-                	//Remove
-                	var removeFolder = self.preprocessors == 'sass' ? './less' : './scss',
-                		removeGulpTask = self.preprocessors == 'sass' ? 'less.js' : 'sass.js'
-                	exec('rm -rf '+removeFolder+' && rm ./gulp/tasks/'+removeGulpTask);
+
+                    if(self.preprocessors === 'none'){
+                        exec('rm -rf less scss && rm ./gulp/tasks/less.js ./gulp/tasks/sass.js');
+                    } else {
+                        var removeFolder = self.preprocessors == 'sass' ? './less' : './scss',
+                            removeGulpTask = self.preprocessors == 'sass' ? 'less.js' : 'sass.js'
+                        exec('rm -rf '+removeFolder+' && rm ./gulp/tasks/'+removeGulpTask);
+                    }
                 }
 
 
