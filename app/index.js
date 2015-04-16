@@ -1,169 +1,198 @@
 'use strict';
 
 var generators = require('yeoman-generator'),
-	util = require('util'),
-	path = require('path'),
-	chalk = require('chalk'),
-	yosay = require('yosay'),
-	fs = require('fs'),
-	exec = require('child_process').exec,
-	defaults = require('./configs/defaults');
+    util = require('util'),
+    path = require('path'),
+    chalk = require('chalk'),
+    yosay = require('yosay'),
+    fs = require('fs'),
+    exec = require('child_process').exec,
+    defaults = require('./configs/defaults');
 
 
 module.exports = generators.Base.extend({
 
-	initialize: function() {
-	    
-	    //Greeting
-	    this.log(yosay(
-	      'Welcome to the\n' + chalk.green.bold('LeadPages(TM) ') + chalk.yellow('Template Starter Kit ') + 'generator!'
-	    ));
+    initialize: function() {
 
-	    //Cache the repos
-		this.log(chalk.green('Caching necessary files...'));
-		
-		var done = this.async();
+        //Greeting
+        this.log(yosay(
+            'Welcome to the\n' + chalk.green.bold('LeadPages(TM) ') + chalk.yellow('Template Starter Kit ') + 'generator!'
+        ));
 
-		this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(){}, true);
-		this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function (){ done();}, true);
+        //Cache the repos
+        this.log(chalk.green('Caching necessary files...'));
+
+        var done = this.async();
+
+        this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function() {}, true);
+        this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function() {
+            done();
+        }, true);
 
 
-	},
+    },
 
-	prompting: function () {
-	    var done = this.async();
+    prompting: function() {
+        var done = this.async();
 
-	    var prompts = [
-	    	{
-	    		name: 'templateId',
-	    		message: 'Please give this template an UNIQUE ID (Ex: WEBINAR-01)',
-	    		default: defaults.templateId
-	    	},
-	    	{
-	    		name: 'templateName',
-	    		message: 'What is your template\'s name?',
-	    		default: defaults.templateName
-	    	},
-	    	{
-	    		type: 'confirm',
-	    		name: 'sampleCodes',
-	    		message: 'Would you like to include the LeadPages(TM) Template Starter Kit?',
-	    		default: true
-	    	},
-	    	{
-	    		type: 'confirm',
-	    		name: 'gulp',
-	    		message: 'Include Gulp tasks to make your life easier?',
-	    		default: true
-	    	},
-	    	{
+        var prompts = [{
+            name: 'templateId',
+            message: 'Please give this template an UNIQUE ID (Ex: WEBINAR-01)',
+            default: defaults.templateId
+        }, {
+            name: 'templateName',
+            message: 'What is your template\'s name?',
+            default: defaults.templateName
+        }, {
+            name: 'sampleCodes',
+            type: 'confirm',
+            message: 'Would you like to include the LeadPages(TM) Template Starter Kit?',
+            default: false
+        }, {
+            name: 'gulp',
+            type: 'confirm',
+            message: 'Include Gulp tasks to make your life easier?',
+            default: true
+        }, {
 
-	    		when: function (repsonse) {
-	    			return repsonse.gulp;
-	    		},
-	    		name: 'extras',
-	    		message: 'Include the following?',
-	    		type: 'checkbox',
-	    		choices: [
-					{
-						name: 'SASS',
-						value: 'sass',
-						checked: true
+            when: function(repsonse) {
+                return repsonse.gulp;
+            },
+            name: 'preprocessors',
+            type: 'list',
+            message: 'Include the following?',
+            choices: [{
+                    name: 'SASS',
+                    value: 'sass',
+                    checked: true
+                }, {
+                    name: 'LESS',
+                    value: 'less',
+                    checked: false
+                }, {
+                    name: 'No thanks',
+                    value: 'none',
+                    checked: false
+                }
+     		]
 
-					}
+        },
+        {
+        	name: 'git',
+        	type: 'confirm',
+        	message: 'Initialize a Git repository?',
+        	default: true
+        }];
 
-	    		]
+        this.prompt(prompts, function(props) {
 
-	    	}
-	    ];
+            this.templateId = props.templateId;
+            this.templateName = props.templateName;
+            this.sampleCodes = props.sampleCodes;
+            this.gulp = props.gulp;
+            this.git = props.git;
 
-	    this.prompt(prompts, function (props) {
+            if (this.gulp) {
+                this.preprocessors = props.preprocessors;
+            }
 
-	    	this.templateId = props.templateId;
-	      	this.templateName = props.templateName;
-	      	this.sampleCodes = props.sampleCodes;
-	      	this.gulp = props.gulp;
-	      	
-	      	if(this.gulp){
-	      		this.extras = props.extras;
-	      	}
+            done();
+        }.bind(this));
+    },
 
-	      	done();
-	     }.bind(this));
-	},
+    writing: {
 
-	writing: {
+        scaffolding: function() {
 
-		scaffolding: function(){
-			
-			var finish = this.async();
-			var self = this;
+            var finish = this.async();
 
-			var templates = {
-				template_id: this.templateId,
-				template_name: this.templateName
-			};
-			
-			if(this.sampleCodes){
+            var templates = {
+                template_id: this.templateId,
+                template_name: this.templateName
+            };
 
-				//Copy from cached files
-				var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
-					remote.directory('.', '.');
-				}, false);
+            if (this.sampleCodes) {
 
-				//Overwrite Skeleton with sample codes
-				var cloneSample = this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function (err, remote){
-					remote.directory('leadpages-template', 'leadpages-template');
-					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
-					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
-					finish();
-				}, false);
+                //Copy from cached files
+                var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(err, remote) {
+                    remote.directory('.', '.');
+                }, false);
 
-			}  else {
-				var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function (err, remote){
-					remote.directory('.', '.');
-					remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
-					remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
-					finish();
-				}, false);
-			}
+                //Overwrite Skeleton with sample codes
+                var cloneSample = this.remote('LeadPages', 'LeadPagesTemplateStarterKit', 'yeoman', function(err, remote) {
+                    remote.directory('leadpages-template', 'leadpages-template');
+                    remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
+                    remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+                    finish();
+                }, false);
 
-		},
+            } else {
+                var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(err, remote) {
+                    remote.directory('.', '.');
+                    remote.template('leadpages-template/index.html', 'leadpages-template/index.html', templates);
+                    remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
+                    finish();
+                }, false);
+            }
 
-		cleanUp: function(){
-			var self = this;
+        }
+    },
 
-			setTimeout(function(){
-				if(!self.gulp){
-					exec('rm -v gulpfile.js package.json readme.md && rm -rfv ./gulp ./scripts ./scss');
-				}
+    install: {
+        installGulp: function() {
+            if (this.gulp) {
+                var self = this;
 
-				exec('rm -v .DS_store .gitignore');
+                self.log(chalk.green('\nInstalling Build System packages...\n'));
+                self.npmInstall();
+            }
+        },
 
-			}, 1000);
-		}
-	},
+        //TODO: Install vendor scripts. jQuery etc...
 
-	install: function(){
-		installGulp: {
-			if(this.gulp){
-				var self = this;
-				//setTimeout(function(){
-					self.log(chalk.green('\nInstalling Build System packages...\n'));
-					self.npmInstall();
-				//}, 1000);
-			}
-		}
-	},
+        cleanUp: function(){
+        	var self = this;
+            setTimeout(function() {
 
-	end: function(){
-		goodbye: {
-			this.log(
-				yosay(chalk.green("I'm all done! Happy Hacking!"))
-			);
-		}
-	}
+                exec('rm .DS_store');
 
+                if (!self.gulp) {
+                    exec('rm gulpfile.js package.json && rm -rf ./gulp ./scripts ./scss ./less');
+                }
+
+                if(!!self.preprocessors){
+
+                    if(self.preprocessors === 'none'){
+                        exec('rm -rf less scss && rm ./gulp/tasks/less.js ./gulp/tasks/sass.js');
+                    } else {
+                        var removeFolder = self.preprocessors == 'sass' ? './less' : './scss',
+                            removeGulpTask = self.preprocessors == 'sass' ? 'less.js' : 'sass.js'
+                        exec('rm -rf '+removeFolder+' && rm ./gulp/tasks/'+removeGulpTask);
+                    }
+                }
+
+
+                if(self.git){
+                	exec('echo "\n\n.DS_store" >> .gitignore && git init && git add .');
+                } else {
+                    exec('rm .gitignore');
+                }
+
+            }, 1000);
+        },
+    },
+
+    end: {
+
+        goodbye: function(){
+            var self = this;
+            setTimeout(function(){
+            	self.log(
+            	    yosay(chalk.green("I'm all done! Happy Hacking!"))
+            	);
+            }, 1000);
+        }
+    }
 
 
 });
