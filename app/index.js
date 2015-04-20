@@ -83,7 +83,7 @@ module.exports = generators.Base.extend({
             {
                 name: 'compileJS',
                 type: 'confirm',
-                message: 'Do you want to compile all js files into single file?',
+                message: 'Do you want to combine all js into a single file?',
                 default: true
             },
             {
@@ -199,9 +199,9 @@ module.exports = generators.Base.extend({
                     }
                 }
 
-                //Remove the ./scripts folder if user don't want to compile js into a single file
+                //Remove the ./scripts folder if user don't want to combine js into a single file
                 if(!self.compileJS) {
-                    exec('rm -rf scripts');
+                    exec('rm -rf scripts gulp/tasks/concat.js');
                 }
 
                 if(self.git){
