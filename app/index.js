@@ -36,53 +36,63 @@ module.exports = generators.Base.extend({
         var done = this.async();
 
         var prompts = [{
-            name: 'templateId',
-            message: 'Please give this template an UNIQUE ID (Ex: WEBINAR-01)',
-            default: defaults.templateId
-        }, {
-            name: 'templateName',
-            message: 'What is your template\'s name?',
-            default: defaults.templateName
-        }, {
-            name: 'sampleCodes',
-            type: 'confirm',
-            message: 'Would you like to include the LeadPages(TM) Template Starter Kit?',
-            default: false
-        }, {
-            name: 'gulp',
-            type: 'confirm',
-            message: 'Include Gulp tasks to make your life easier?',
-            default: true
-        }, {
-
-            when: function(repsonse) {
-                return repsonse.gulp;
+                name: 'templateId',
+                message: 'Please give this template an UNIQUE ID (Ex: WEBINAR-01)',
+                default: defaults.templateId
             },
-            name: 'preprocessors',
-            type: 'list',
-            message: 'Include the following?',
-            choices: [{
-                    name: 'SASS',
-                    value: 'sass',
-                    checked: true
-                }, {
-                    name: 'LESS',
-                    value: 'less',
-                    checked: false
-                }, {
-                    name: 'No thanks',
-                    value: 'none',
-                    checked: false
-                }
-     		]
+            {
+                name: 'templateName',
+                message: 'What is your template\'s name?',
+                default: defaults.templateName
+            },
+            {
+                name: 'sampleCodes',
+                type: 'confirm',
+                message: 'Would you like to include the LeadPages(TM) Template Starter Kit?',
+                default: false
+            },
+            {
+                name: 'gulp',
+                type: 'confirm',
+                message: 'Include Gulp tasks to make your life easier?',
+                default: true
+            },
+            {
+                when: function(repsonse) {
+                    return repsonse.gulp;
+                },
+                name: 'preprocessors',
+                type: 'list',
+                message: 'Include the following?',
+                choices: [{
+                        name: 'SASS',
+                        value: 'sass',
+                        checked: true
+                    }, {
+                        name: 'LESS',
+                        value: 'less',
+                        checked: false
+                    }, {
+                        name: 'No thanks',
+                        value: 'none',
+                        checked: false
+                    }
+         		]
 
-        },
-        {
-        	name: 'git',
-        	type: 'confirm',
-        	message: 'Initialize a Git repository?',
-        	default: true
-        }];
+            },
+            {
+                name: 'compileJS',
+                type: 'confirm',
+                message: 'Do you want to combine all js into a single file?',
+                default: true
+            },
+            {
+            	name: 'git',
+            	type: 'confirm',
+            	message: 'Initialize a Git repository?',
+            	default: true
+            }
+        ];
 
         this.prompt(prompts, function(props) {
 
@@ -90,6 +100,7 @@ module.exports = generators.Base.extend({
             this.templateName = props.templateName;
             this.sampleCodes = props.sampleCodes;
             this.gulp = props.gulp;
+            this.compileJS = props.compileJS;
             this.git = props.git;
 
             if (this.gulp) {
@@ -103,6 +114,7 @@ module.exports = generators.Base.extend({
     writing: {
 
         scaffolding: function() {
+            var self = this;
 
             var finish = this.async();
 
@@ -125,6 +137,22 @@ module.exports = generators.Base.extend({
                     remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
                     finish();
                 }, false);
+
+                //User wants both TSK and SASS/LESS. Make a copy of style.css and move to the proper folder
+                if(!!self.preprocessors) {
+                    var moveCssTo = self.preprocessors === 'sass' ? 'scss' : 'less';
+                    var cmd = 'cp leadpages-template/css/style.css '+moveCssTo+'/template-starter-kit.'+moveCssTo;
+                        cmd+=' && mv '+moveCssTo+'/template-starter-kit.css '+moveCssTo+'/template-starter-kit.'+moveCssTo;
+                    setTimeout(function(){
+                        self.log(chalk.green('\nMoving leadpages-template/css/style.css to '+moveCssTo+'/template-starter-kit.'+moveCssTo+'\n'));
+                        exec(cmd);
+                    }, 500);
+                }
+
+                //If user wants TSK and concat the JS files, make a copy of functions.js so concat won't overwrite it
+                if(self.compileJS) {
+                    exec('cp leadpages-template/js/functions.js ./scripts/app/')
+                }
 
             } else {
                 var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(err, remote) {
@@ -171,6 +199,10 @@ module.exports = generators.Base.extend({
                     }
                 }
 
+                //Remove the ./scripts folder if user don't want to combine js into a single file
+                if(!self.compileJS) {
+                    exec('rm -rf scripts gulp/tasks/concat.js');
+                }
 
                 if(self.git){
                 	exec('echo "\n\n.DS_store" >> .gitignore && git init && git add .');

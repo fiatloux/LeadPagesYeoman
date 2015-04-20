@@ -1,6 +1,6 @@
 ### What is the LeadPages Yeoman Generator? ###
 
-Yeoman helps kickstart new projects. The LeadPages [Yeoman](http://yeoman.io) generator allows you to quickly scaffold out new projects, taking the manual setup out of the process. In a single command, you can build out the file & folder structure for a LeadPages template. Toggle on a few options, and you can have powerful, robust tools at your fingertips. All in less than a minute.
+Yeoman helps kickstart new projects. The LeadPages&trade; [Yeoman](http://yeoman.io) generator allows you to quickly scaffold out new projects, taking the manual setup out of the process. In a single command, you can build out the file & folder structure for a LeadPages template. Toggle on a few options, and you can have powerful, robust tools at your fingertips. All in less than a minute.
 
 ### What you need: ###
 
@@ -8,8 +8,8 @@ Yeoman helps kickstart new projects. The LeadPages [Yeoman](http://yeoman.io) ge
 * Install [NodeJS](http://nodejs.org) and install [GitSCM](http://git-scm.com/download/win) (Windows)
 
 ### How to install?
-* Fire up your Terminal and install yeoman and LeadPages&trade; Template Generator `npm install -g yo generator-leadpages`
-  * If you receive an error relating to permissions, here are some additional options: 
+* Fire up your Terminal and install yeoman, [GulpJS](http://gulpjs.com), and LeadPages&trade; Template Generator `npm install -g yo generator-leadpages gulp`
+  * If you receive an error relating to permissions, here are some additional options:
     - Run `sudo chown -R 'whoami' ~/.npm` to fix a potential permission issue. (Note: ' around whoami are the grave accent `), then try `npm install -g yo generator-leadpages` again
     - If that still doesn't work, try `sudo chown -R 'whoami' /usr/local/lib/node_modules` (Note: ' around whoami are the grave accent `), then try `npm install -g yo generator-leadpages`
 	- If that still doesn't work, try `sudo npm install -g yo generator-leadpages` in front and enter your password.
@@ -17,9 +17,10 @@ Yeoman helps kickstart new projects. The LeadPages [Yeoman](http://yeoman.io) ge
 
 ### How to run it? ###
 
-* Fire up your terminal
-* Create a new folder and change directory into it: `mkdir <folderName>`, then `cd <folderName>`
+* Fire up your terminal or GitSCM's Bash Terminal (Windows)
+* Create a new folder at your desired location and change directory into it: `mkdir <folderName>`, then `cd <folderName>`
 * Type `yo leadpages` and follow the prompts
+  * If you are using **Gulp**, type: `gulp start` to start it (See [LeadPages&trade; Build System](https://github.com/LeadPages/LeadPagesBuildSystem) for documentations)
 * Start coding!
 
 ### How to update? ###
@@ -35,7 +36,7 @@ Yeoman helps kickstart new projects. The LeadPages [Yeoman](http://yeoman.io) ge
 
 * A copy of the [LeadPages&trade; Template Starter Kit](https://github.com/LeadPages/template-starter-kit)
 * OR just a barebones LeadPages&trade; template with required files/folders structure
-* [LeadPages&trade; Build System](https://github.com/LeadPages/LeadPagesBuildSystem) for workflow automation
+* [LeadPages&trade; Build System](https://github.com/LeadPages/LeadPagesBuildSystem) for workflow automation using [GulpJS](http://gulpjs.com). Visit the [LeadPages Build System](https://github.com/LeadPages/LeadPagesBuildSystem) repository for available tasks.
 
 ## Questions/Comments/Feature Request/Bugs? ##
 
