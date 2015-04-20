@@ -1,22 +1,24 @@
-### What is this repository for? ###
+### What is the LeadPages Yeoman Generator? ###
 
-An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages Template Authoring Kit.
+Yeoman helps kickstart new projects. The LeadPages [Yeoman](http://yeoman.io) generator allows you to quickly scaffold out new projects, taking the manual setup out of the process. In a single command, you can build out the file & folder structure for a LeadPages template. Toggle on a few options, and you can have powerful, robust tools at your fingertips. All in less than a minute.
 
 ### What you need: ###
 
-* Install [NodeJS](http://nodejs.org) and install [Xcode](https://developer.apple.com/xcode/downloads/) (Mac only)
+* Install [NodeJS](http://nodejs.org) and install [Xcode](https://developer.apple.com/xcode/downloads/) (Mac)
+* Install [NodeJS](http://nodejs.org) and install [GitSCM](http://git-scm.com/download/win) (Windows)
 
 ### How to install?
 * Fire up your Terminal and install yeoman and LeadPages&trade; Template Generator `npm install -g yo generator-leadpages`
-  * If error asking for permission: try one or both: 
-    - Run `sudo chown -R 'whoami' ~/.npm` to fix the permission issue. (Note: ' around whoami are the grave accent `)
-    - If that still doesn't work, try `sudo chown -R 'whoami' /usr/local/lib/node_modules` (Note: ' around whoami are the grave accent `)
-	- If that still doesn't work, just add `sudo` in front and enter your password.
+  * If you receive an error relating to permissions, here are some additional options: 
+    - Run `sudo chown -R 'whoami' ~/.npm` to fix a potential permission issue. (Note: ' around whoami are the grave accent `), then try `npm install -g yo generator-leadpages` again
+    - If that still doesn't work, try `sudo chown -R 'whoami' /usr/local/lib/node_modules` (Note: ' around whoami are the grave accent `), then try `npm install -g yo generator-leadpages`
+	- If that still doesn't work, try `sudo npm install -g yo generator-leadpages` in front and enter your password.
+	- If you're still having problems, submit an issue [here](https://github.com/LeadPages/LeadPagesYeoman/issues).
 
 ### How to run it? ###
 
 * Fire up your terminal
-* Create a new folder and change directory into it: `mkdir <folderName> && cd <folderName>`
+* Create a new folder and change directory into it: `mkdir <folderName>`, then `cd <folderName>`
 * Type `yo leadpages` and follow the prompts
 * Start coding!
 
@@ -32,8 +34,8 @@ An npm packaged [Yeoman](http://yeoman.io) generator that scaffolds a LeadPages 
 ## What does it include? ###
 
 * A copy of the [LeadPages&trade; Template Starter Kit](https://github.com/LeadPages/template-starter-kit)
-* OR just a barebone LeadPages&trade; required files/folders structure
-* [LeadPages&trade; Build System](https://github.com/LeadPages/LeadPagesBuildSystem)
+* OR just a barebones LeadPages&trade; template with required files/folders structure
+* [LeadPages&trade; Build System](https://github.com/LeadPages/LeadPagesBuildSystem) for workflow automation
 
 ## Questions/Comments/Feature Request/Bugs? ##
 
@@ -42,7 +44,7 @@ Open an issue [here](https://github.com/LeadPages/LeadPagesYeoman/issues).
 
 ## Contributing ##
 
-1. Fork [a branch](https://github.com/LeadPagesYeoman)
+1. Fork [a branch](https://github.com/LeadPages/LeadPagesYeoman)
 2. Code
 3. Submit a Pull Request
 4. Thank you for helping out! You're awesome!
