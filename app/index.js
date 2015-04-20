@@ -103,6 +103,7 @@ module.exports = generators.Base.extend({
     writing: {
 
         scaffolding: function() {
+            var self = this;
 
             var finish = this.async();
 
@@ -125,6 +126,16 @@ module.exports = generators.Base.extend({
                     remote.template('leadpages-template/meta/template.json', 'leadpages-template/meta/template.json', templates);
                     finish();
                 }, false);
+
+                //User wants both TSK and SASS/LESS. Make a copy of style.css and move to the proper folder
+                if(!!self.preprocessors) {
+                    var moveTo = self.preprocessors === 'sass' ? 'scss' : 'less';
+                    var cmd = 'cp leadpages-template/css/style.css '+moveTo+'/ && mv '+moveTo+'/template-starter-kit.css '+moveTo+'/style.scss';
+                    setTimeout(function(){
+                        self.log(chalk.green('\nMoving leadpages-template/css/style.css to '+moveTo+'/template-starter-kit.'+moveTo+'\n'));
+                        exec(cmd);
+                    }, 500);
+                }
 
             } else {
                 var cloneSkeleton = this.remote('LeadPages', 'LeadPagesBuildSystem', 'yeoman', function(err, remote) {
